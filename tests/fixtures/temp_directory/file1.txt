@@ -1,0 +1,5 @@
+I am file 1
+
+Sense of beauty and state space reduction
+
+I have been teaching myself reinforcement learning and have made some interesting connections that I want to share. In reinforcement learning (RL), you use games as a substrate to teach an AI how to learn the optimal strategy to win. You craft an algorithm that the RL agent, given enough computing power, can theoretically converge to the optimal strategy to play the game.
