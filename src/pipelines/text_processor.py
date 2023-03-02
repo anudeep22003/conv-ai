@@ -16,6 +16,7 @@ class TextProcessor:
         doc_index = self.read_file(fpath)
         clean_doc_index = self.iterate_and_clean(doc_index)
         self.write_to_file(clean_doc_index, f"{self.dir}/cleaned_{self.f_name}")
+        return clean_doc_index
 
     def iterate_and_clean(self, doc_index: dict) -> dict:
         for idx, doc in doc_index.items():
@@ -36,7 +37,7 @@ class TextProcessor:
         write_obj: dict,
         file_path: str,
     ) -> None:
-        with open(file=f"{file_path}", mode="a", encoding="utf-8") as f:
+        with open(file=f"{file_path}", mode="w", encoding="utf-8") as f:
             json.dump(write_obj, f)
 
     def remove_linebreak(self, doc: str) -> dict:
