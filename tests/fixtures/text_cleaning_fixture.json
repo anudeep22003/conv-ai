@@ -1,0 +1,4 @@
+{
+    "file1": "Word\u00a0single,\u00a0\u00a0double",
+    "file2": "Single\nDouble\n\nMultiple\n\n\n\n"
+}

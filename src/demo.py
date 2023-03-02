@@ -1,4 +1,4 @@
-from loaders.loader import Loader
+from loaders.directory_loader import Loader
 from pipelines.text_processor import TextProcessor
 from pipelines.indexer import ConfigLLM, Indexer
 import os
