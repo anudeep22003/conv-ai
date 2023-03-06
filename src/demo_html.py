@@ -24,4 +24,4 @@ index = Indexer(
     save_location_path="data/index",
 )
 
-interact_with_user(interactive_index.llm_index)
+interact_with_user(index.llm_index)
