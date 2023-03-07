@@ -9,16 +9,38 @@ class ConvInterface:
         self.index = llm_index
         pass
 
-    def update_conversation(self, state, text) -> List:
-        response = self.index.query(text)
-        state = state + [(text, str(response))]
-        return state, state
+    def update_context(self, state_user, state_ai) -> str:
+        "Builds the context that gets chained to the next llm query"
+        context = []
+        for user_q, ai_respone in zip(state_user, state_ai):
+            inline_context = f"""
+            User Query:
+            {str(user_q)}
+
+            AI Response:
+            {str(ai_respone)}
+
+            """
+            context.append(inline_context)
+        meta_context = "Given the previous User Query and the AI Response, answer the below User Query."
+        context.append(meta_context)
+        return "\n".join(context)
+
+    def converse(self, state_user, state_ai, text) -> List:
+        "where the user input is being taken mixed with historic context and output being generated for chatbot to display"
+        state_user += [text]
+        context = self.update_context(state_user, state_ai)
+        response = self.index.query(f"{context}\n{text}")
+        state_ai += [f"{response}"]
+        state_merged = list(zip(state_user, state_ai))
+        return state_user, state_ai, state_merged
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         "overload this to build the query"
         with gr.Blocks() as demo:
             chatbot = gr.Chatbot()
-            state = gr.State([])
+            state_user = gr.State([])
+            state_ai = gr.State([])
 
             with gr.Row():
                 with gr.Column():
@@ -26,11 +48,12 @@ class ConvInterface:
                         show_label=False, placeholder="Enter text and press enter"
                     )
 
-            txt.submit(
-                fn=self.update_conversation,
-                inputs=[state, txt],
-                outputs=[state, chatbot],
-            )
+                    txt.submit(
+                        fn=self.converse,
+                        inputs=[state_user, state_ai, txt],
+                        outputs=[state_user, state_ai, chatbot],
+                        show_progress=True,
+                    )
         demo.launch()
 
 

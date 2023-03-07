@@ -14,6 +14,6 @@ path = f"data/index/{DavinciConfigLLM.name}.json"
 
 index = IndexLoader(config=DavinciConfigLLM, load_from_location=path)
 
-interact_with_user(index.llm_index)
-# conv_ai = ConvInterface(llm_index=index.llm_index)
-# conv_ai()
+# interact_with_user(index.llm_index)
+conv_ai = ConvInterface(llm_index=index.llm_index)
+conv_ai()
